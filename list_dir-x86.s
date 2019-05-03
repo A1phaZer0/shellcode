@@ -1,3 +1,11 @@
+# 
+# gcc -nostdlib -m32 -o list_dir-x86 list_dir-x86.s
+# for i in $(objdump -d -M intel list_dir-x86 | grep "^ " | cut -f2); do
+#     echo -n "\x$i"
+# done
+#
+# Change line 17 and line 70 simultaneously 
+#
 .intel_syntax noprefix
 .global _start
 
@@ -6,7 +14,7 @@ _start:
 REL_CALL:
 	pop ebx
         xor edx, edx
-	mov byte ptr [ebx + 1], dl # NULL-terminated dir name
+	mov byte ptr [ebx + 1], dl # NUL to terminated string
 	push 04
 	pop edx
 	xor ecx, ecx
@@ -21,7 +29,7 @@ REL_CALL:
 	mov dx, 0x1010
 	push 141
 	pop eax
-	int 0x80      # syscall getdents
+	int 0x80     # syscall getdents
 
 PRINT_LOOP:
 	xor eax, eax
@@ -60,5 +68,3 @@ EXIT:
 REL_JMP:
 	call REL_CALL
 	.ascii "." # put linux_dirent here too.
-
-	

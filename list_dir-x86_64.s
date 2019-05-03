@@ -1,3 +1,11 @@
+#
+# gcc -nostdlib -o list_dir-x86_64 list_dir-x86_64.s
+# for i in $(objdump -d -M intel list_dir-x86_64 | grep "^ " | cut -f2); do
+#     echo -n "\x$i"
+# done
+#
+# Change line 17 and line 71 simultaneously 
+#
 .intel_syntax noprefix
 .global _start
 
@@ -61,5 +69,3 @@ EXIT:
 REL_JMP:
 	call REL_CALL
 	.ascii "." # put linux_dirent here too.
-
-	
